@@ -7,21 +7,21 @@ public enum Directions {
 		this.value = value;
 	}
 	
-	public int[] convertTo2DOffset(int offset, Directions direction)
+	public static int[] convertTo2DOffset(int offset, Directions direction)
 	{
 		int[] offset2D = {0,0};
 		switch (direction) {
 		case North:
-			offset2D[1] += value * offset;
+			offset2D[1] += direction.value * offset;
 			break;
 		case South:
-			offset2D[1] += value * offset;
+			offset2D[1] += direction.value * offset;
 			break;
 		case West:
-			offset2D[0] += value * offset;
+			offset2D[0] += direction.value * offset;
 			break;
 		case East:
-			offset2D[0] += value * offset;
+			offset2D[0] += direction.value * offset;
 			break;
 		}
 		return offset2D;

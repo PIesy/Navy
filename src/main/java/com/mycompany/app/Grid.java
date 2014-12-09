@@ -35,6 +35,24 @@ public class Grid {
 		return dimensions;
 	}
 	
+	public int getSizeHorizontal()
+	{
+		return dimensions[0];
+	}
+	
+	public int getSizeVertical()
+	{
+		return dimensions[1];
+	}
+	
+	public boolean isOutOfBounds(int[] coordinates)
+	{
+		for(int i = 0; i < 2; i++)
+			if((coordinates[i] < 0) || (coordinates[i] > dimensions[i]))
+				return true;
+		return false;
+	}
+	
 	private GridItem[][] grid;
 	private int dimensions[] = new int[2];
 }
