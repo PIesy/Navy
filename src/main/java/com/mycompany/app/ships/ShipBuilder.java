@@ -8,7 +8,7 @@ public class ShipBuilder {
 	}
 	
 	public enum ShipType { 
-		Boat(1), Schooner(2), Destroyer(3), Carrier(4);
+		Boat(0), Schooner(1), Destroyer(2), Carrier(3);
 		
 		public int getSize()
 		{

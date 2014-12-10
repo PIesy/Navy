@@ -43,7 +43,7 @@ public class ConsolePainter implements Painter{
 			return '*';
 		case 2:
 			if(enemy)
-				return ' ';
+				return '-';
 			return 'S';
 		case 3:
 			return 'D';

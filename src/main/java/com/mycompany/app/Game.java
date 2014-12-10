@@ -2,6 +2,8 @@ package com.mycompany.app;
 
 import com.mycompany.app.Grid;
 import com.mycompany.app.Painter;
+import com.mycompany.app.ships.ShipBuilder;
+import com.mycompany.app.ships.ShipBuilder.ShipType;
 
 class Player 
 {
@@ -29,6 +31,7 @@ public class Game {
 	
 	public void Start()
 	{
+		fields[0].SetShip(ShipBuilder.BuildShip(ShipType.Carrier), 5, 5, Directions.West);
 		painter.draw(fields[0], fields[1]);
 	}
 

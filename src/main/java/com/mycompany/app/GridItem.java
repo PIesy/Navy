@@ -29,6 +29,7 @@ public class GridItem {
 	public void setShip(Ship ship)
 	{
 		this.ship = ship;
+		isEmpty = false;
 	}
 	
 	public void removeShip()
