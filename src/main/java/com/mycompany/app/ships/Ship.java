@@ -1,8 +1,6 @@
 package com.mycompany.app.ships;
 
-import com.mycompany.app.Directions;
-import com.mycompany.app.Grid;
-import com.mycompany.app.GridUndefinedException;
+import com.mycompany.app.exceptions.ShipIsKilledException;
 
 public class Ship {
 	
@@ -10,14 +8,14 @@ public class Ship {
 	{
 		size = 0;
 		shipType = "";
-		boundGrid = null;
+		hitpoints = 0;
 	}
 	
-	public Ship(String shipType, int size, Grid grid)
+	public Ship(String shipType, int size)
 	{
 		this.shipType = shipType;
 		this.size = size;
-		boundGrid = grid;
+		hitpoints = size;
 	}
 	
 	public String getType()
@@ -30,42 +28,14 @@ public class Ship {
 		return size;
 	}
 	
-	public int[] getStartCoordinates()
+	public void Hit() throws ShipIsKilledException
 	{
-		return startCoordinates;
+		hitpoints--;
+		if(hitpoints == 0)
+			throw new ShipIsKilledException();
 	}
-	
-	public int[] getEndCoordinates()
-	{
-		return endCoordinates;
-	}
-	
-	public void setPosition(int x, int y, Directions direction) throws IndexOutOfBoundsException, GridUndefinedException
-	{
-		int[] offset;
-		int[] coordinates = {x, y};
 		
-		if(boundGrid == null)
-			throw new GridUndefinedException("No grid set");
-		offset = Directions.convertTo2DOffset(size, direction);
-		coordinates[0] += offset[0];
-		coordinates[1] += offset[1];
-		if (boundGrid.isOutOfBounds(coordinates))
-			throw new IndexOutOfBoundsException("Ship doesn't fit in field");
-		startCoordinates[0] = x;
-		startCoordinates[1] = y;
-		endCoordinates[0] = coordinates[0];
-		endCoordinates[1] = coordinates[1];
-	}
-	
-	private void setPositionInGrid(int x, int y)
-	{
-		//for(int i = startCoordinates[1]; i < endCoordinates[1]; i++)
-	}
-	
 	private final int size;
 	private final String shipType;
-	private final Grid boundGrid;
-	private int[] startCoordinates = {0,0};
-	private int[] endCoordinates = {0,0};
+	private int hitpoints;
 }

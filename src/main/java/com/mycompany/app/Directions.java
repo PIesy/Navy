@@ -1,31 +1,17 @@
 package com.mycompany.app;
 
 public enum Directions {
-	North(-1), East(1), South(1), West(-1);
+	North(0, -1), East(1, 0), South(0, 1), West(-1, 0);
 	
-	private Directions(int value) {
-		this.value = value;
+	private Directions(int x, int y) {
+		offset[0] = x;
+		offset[1] = y;
 	}
 	
-	public static int[] convertTo2DOffset(int offset, Directions direction)
+	public int[] convertTo2DOffset()
 	{
-		int[] offset2D = {0,0};
-		switch (direction) {
-		case North:
-			offset2D[1] += direction.value * offset;
-			break;
-		case South:
-			offset2D[1] += direction.value * offset;
-			break;
-		case West:
-			offset2D[0] += direction.value * offset;
-			break;
-		case East:
-			offset2D[0] += direction.value * offset;
-			break;
-		}
-		return offset2D;
+		return offset;
 	}
 	
-	private int value;
+	private int[] offset = {0,0};
 }

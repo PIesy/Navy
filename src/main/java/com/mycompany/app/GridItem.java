@@ -1,32 +1,42 @@
 package com.mycompany.app;
 
-import com.mycompany.app.GridItemState;
-import com.mycompany.app.GridItemResponce;
+import com.mycompany.app.exceptions.AlreadyHitException;
+import com.mycompany.app.exceptions.ShipIsKilledException;
+import com.mycompany.app.ships.Ship;
 
 public class GridItem {
 	
 	public GridItem(){}
 	
-	public GridItem(GridItemState state)
+	public void Hit() throws AlreadyHitException, ShipIsKilledException
 	{
-		this.state = state;
-	}
-	
-	public GridItemResponce Hit()
-	{
-		state = GridItemState.Hit;
-		return GridItemResponce.getByOrdinal(state.ordinal());
+		if(isHit)
+			throw new AlreadyHitException();
+		if(!isEmpty)
+			ship.Hit();
 	}
     
-	public void setState(GridItemState state)
+	public boolean IsHit()
 	{
-		this.state = state;
+		return isHit;
 	}
 	
-	public GridItemState getState()
+	public boolean IsEmpty()
 	{
-		return state;
+		return isEmpty;
 	}
 	
-	private GridItemState state = GridItemState.Empty;
+	public void setShip(Ship ship)
+	{
+		this.ship = ship;
+	}
+	
+	public void removeShip()
+	{
+		ship = null;
+	}
+	
+	private Ship ship = null;
+	private boolean isEmpty = true;
+	private boolean isHit = false;
 }
