@@ -1,8 +1,12 @@
-d:\Projects\my-app\src\main\java\com\mycompany\app\GridItemResponce.java
 d:\Projects\my-app\src\main\java\com\mycompany\app\ships\Ship.java
+d:\Projects\my-app\src\main\java\com\mycompany\app\exceptions\AlreadyHitException.java
 d:\Projects\my-app\src\main\java\com\mycompany\app\GridItem.java
-d:\Projects\my-app\src\main\java\com\mycompany\app\GridUndefinedException.java
+d:\Projects\my-app\src\main\java\com\mycompany\app\GridItemDescriptor.java
+d:\Projects\my-app\src\main\java\com\mycompany\app\exceptions\ShipIsKilledException.java
+d:\Projects\my-app\src\main\java\com\mycompany\app\Game.java
 d:\Projects\my-app\src\main\java\com\mycompany\app\Directions.java
 d:\Projects\my-app\src\main\java\com\mycompany\app\Grid.java
+d:\Projects\my-app\src\main\java\com\mycompany\app\ConsolePainter.java
 d:\Projects\my-app\src\main\java\com\mycompany\app\App.java
-d:\Projects\my-app\src\main\java\com\mycompany\app\GridItemState.java
+d:\Projects\my-app\src\main\java\com\mycompany\app\Painter.java
+d:\Projects\my-app\src\main\java\com\mycompany\app\ships\ShipBuilder.java

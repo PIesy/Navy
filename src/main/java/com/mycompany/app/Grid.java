@@ -17,14 +17,20 @@ public class Grid {
 		dimensions[0] = sizeX;
 		dimensions[1] = sizeY;
 		grid = new GridItem[sizeY][sizeX];
+		for (int i = 0; i < sizeY; i++)
+			for (int j = 0; j < sizeX; j++)
+				grid[i][j] = new GridItem();
 	}
 	
 	public GridItemDescriptor[][] getState()
 	{
-		GridItemDescriptor[][] states = new GridItemDescriptor[dimensions[0]][dimensions[1]];
+		GridItemDescriptor[][] states = new GridItemDescriptor[dimensions[1]][dimensions[0]];
 		for(int i = 0; i < dimensions[1]; i++)
 			for (int j = 0; j < dimensions[0]; j++)
+			{
+				states[i][j] = new GridItemDescriptor();
 				states[i][j].initialize(grid[i][j]);
+			}
 		return states;
 	}
 
