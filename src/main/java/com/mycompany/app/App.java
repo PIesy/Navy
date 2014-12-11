@@ -10,6 +10,6 @@ public class App
     {
         System.out.println( "Hello World!" );
         Game game = new Game(12, 10, new ConsolePainter());
-        game.Start();
+        game.start();
     }
 }

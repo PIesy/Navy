@@ -10,10 +10,10 @@ public class Grid {
 	public Grid(){}
 	
 	public Grid(int sizeX, int sizeY){
-		InitializeGrid(sizeX , sizeY);
+		initializeGrid(sizeX , sizeY);
 	}
 	
-	public void InitializeGrid(int sizeX, int sizeY){
+	public void initializeGrid(int sizeX, int sizeY){
 		dimensions[0] = sizeX;
 		dimensions[1] = sizeY;
 		grid = new GridItem[sizeY][sizeX];
@@ -34,9 +34,9 @@ public class Grid {
 		return states;
 	}
 
-	public void Hit(int x, int y) throws AlreadyHitException, ShipIsKilledException
+	public boolean hit(int x, int y) throws AlreadyHitException, ShipIsKilledException
 	{
-		grid[y][x].Hit();
+		return grid[y][x].hit();
 	}
 	
 	public int[] getSize()
@@ -54,7 +54,7 @@ public class Grid {
 		return dimensions[1];
 	}
 	
-	public void SetShip(Ship ship, int x, int y, Directions direction)
+	public void setShip(Ship ship, int x, int y, Directions direction) throws IndexOutOfBoundsException
 	{
 		int[] offset = direction.convertTo2DOffset();
 		int[] startCoordinates = {x, y};
@@ -62,13 +62,15 @@ public class Grid {
 		
 		for(int i = 0; i < 2; i++)
 			endCoordinates[i] = startCoordinates[i] + offset[i] * ship.getSize();
+		if(isOutOfBounds(startCoordinates) || isOutOfBounds(endCoordinates))
+			throw new IndexOutOfBoundsException();
 		if((offset[0] < 0) || (offset[1] < 0))
 			setShipInGrid(endCoordinates, startCoordinates, ship);
 		else 
 			setShipInGrid(startCoordinates, endCoordinates, ship);
 	}
 	
-	public boolean IsOutOfBounds(int[] coordinates)
+	public boolean isOutOfBounds(int[] coordinates)
 	{
 		for(int i = 0; i < 2; i++)
 			if((coordinates[i] < 0) || (coordinates[i] > dimensions[i] - 1))

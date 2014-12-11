@@ -2,9 +2,9 @@ package com.mycompany.app.ships;
 
 public class ShipBuilder {
 
-	public static Ship BuildShip(ShipType type)
+	public static Ship buildShip(ShipType type)
 	{
-		return new Ship(type.toString(), type.getSize());
+		return new Ship(type.toString(), type.getSize() + 1);
 	}
 	
 	public enum ShipType { 

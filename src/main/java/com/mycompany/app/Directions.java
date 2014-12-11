@@ -1,7 +1,7 @@
 package com.mycompany.app;
 
 public enum Directions {
-	North(0, -1), East(1, 0), South(0, 1), West(-1, 0);
+	North(0, -1), East(1, 0), South(0, 1), West(-1, 0), None(5, 5);
 	
 	private Directions(int x, int y) {
 		offset[0] = x;

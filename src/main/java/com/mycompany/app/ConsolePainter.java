@@ -1,37 +1,31 @@
 package com.mycompany.app;
 
+import java.io.PrintWriter;
+
 import com.mycompany.app.Painter;
 
 public class ConsolePainter implements Painter{
 
 	public void draw(Grid currentPlayerGrid, Grid enemyGrid) {
-		drawCurrentPlayerGrid(currentPlayerGrid);
-		System.out.println("---------------------------------------------------------");
-		drawEnemyPlayerGrid(enemyGrid);
+		drawGrid(false, currentPlayerGrid);
+		writer.println("---------------------------------------------------------");
+		drawGrid(true, enemyGrid);
 	}
 
-	private void drawCurrentPlayerGrid(Grid grid)
+	private void drawGrid(boolean isEnemy, Grid grid)
 	{
 		GridItemDescriptor[][] field = grid.getState();
 		
 		for(int i = 0; i < grid.getSizeVertical(); i++)
 		{
 			for (int j = 0; j < grid.getSizeHorizontal(); j++)
-				System.out.print(getCharFromStateIdentifier(false, field[i][j].toInt()));
-			System.out.print('\n');
+				writer.print(getCharFromStateIdentifier(isEnemy, field[i][j].toInt()));
+			writer.println();
 		}
 	}
 	
-	private void drawEnemyPlayerGrid(Grid grid)
-	{
-		GridItemDescriptor[][] field = grid.getState();
-		
-		for(int i = 0; i < grid.getSizeVertical(); i++)
-		{
-			for (int j = 0; j < grid.getSizeHorizontal(); j++)
-				System.out.print(getCharFromStateIdentifier(true, field[i][j].toInt()));
-			System.out.print('\n');
-		}
+	public void printLine(String line) {
+		System.out.println(line);
 	}
 	
 	private char getCharFromStateIdentifier(boolean enemy, int identifier)
@@ -50,5 +44,7 @@ public class ConsolePainter implements Painter{
 		default:
 			return '!';
 		}
-	}	
+	}
+	
+	private PrintWriter writer = new PrintWriter(System.out, true);
 }

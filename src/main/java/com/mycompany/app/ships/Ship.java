@@ -28,11 +28,11 @@ public class Ship {
 		return size;
 	}
 	
-	public void Hit() throws ShipIsKilledException
+	public void hit() throws ShipIsKilledException
 	{
 		hitpoints--;
 		if(hitpoints == 0)
-			throw new ShipIsKilledException();
+			throw new ShipIsKilledException(shipType);
 	}
 		
 	private final int size;

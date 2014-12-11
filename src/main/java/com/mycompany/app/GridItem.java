@@ -8,28 +8,33 @@ public class GridItem {
 	
 	public GridItem(){}
 	
-	public void Hit() throws AlreadyHitException, ShipIsKilledException
+	public boolean hit() throws AlreadyHitException, ShipIsKilledException
 	{
-		if(isHit)
+		if(hit)
 			throw new AlreadyHitException();
-		if(!isEmpty)
-			ship.Hit();
+		hit = true;
+		if(!empty)
+		{
+			ship.hit();
+			return true;
+		}
+		return false;
 	}
     
-	public boolean IsHit()
+	public boolean isHit()
 	{
-		return isHit;
+		return hit;
 	}
 	
-	public boolean IsEmpty()
+	public boolean isEmpty()
 	{
-		return isEmpty;
+		return empty;
 	}
 	
 	public void setShip(Ship ship)
 	{
 		this.ship = ship;
-		isEmpty = false;
+		empty = false;
 	}
 	
 	public void removeShip()
@@ -38,6 +43,6 @@ public class GridItem {
 	}
 	
 	private Ship ship = null;
-	private boolean isEmpty = true;
-	private boolean isHit = false;
+	private boolean empty = true;
+	private boolean hit = false;
 }

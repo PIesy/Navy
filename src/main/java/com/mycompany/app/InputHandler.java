@@ -1,0 +1,72 @@
+package com.mycompany.app;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Scanner;
+
+public class InputHandler {
+	
+	public int[] getCoordinates(int[] ambits)
+	{
+		int[] coordinates = {-1, -1};
+		do {
+			try {
+				buffer = reader.readLine();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			try(Scanner scanner = new Scanner(buffer);)
+			{
+				coordinates[0] = scanner.nextInt();
+				coordinates[1] = scanner.nextInt();
+			}
+			catch(Exception e){}
+		} while (!checkCoordinateResults(coordinates, ambits));
+		return coordinates;
+	}
+	
+	public Directions getShipDirection()
+	{
+		Directions direction;
+		do{
+			try {
+				buffer = reader.readLine();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			switch(buffer.toLowerCase()){
+			case "north":
+				direction = Directions.North;
+				break;
+			case "south":
+				direction = Directions.South;
+				break;
+			case "east":
+				direction = Directions.East;
+				break;
+			case "west":
+				direction = Directions.West;
+				break;
+			default:
+				direction = Directions.None;
+				break;
+			}
+		}
+		while(direction == Directions.None);
+		return direction;
+	}
+	
+	private boolean checkCoordinateResults(int[] coordinates, int[] ambits)
+	{
+		if((coordinates[0] < 0) || (coordinates[1] < 0))
+			return false;
+		if((coordinates[0] > ambits[0]) || (coordinates[1] > ambits[1]))
+			return false;
+		return true;
+	}
+	
+	private String buffer;
+	private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+}
