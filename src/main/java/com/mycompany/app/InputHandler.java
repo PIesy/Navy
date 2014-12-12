@@ -13,14 +13,11 @@ public class InputHandler {
 		do {
 			try {
 				buffer = reader.readLine();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			
+			} catch (IOException e) {}
 			try(Scanner scanner = new Scanner(buffer);)
 			{
-				coordinates[0] = scanner.nextInt();
-				coordinates[1] = scanner.nextInt();
+				coordinates[0] = scanner.nextInt() - 1;
+				coordinates[1] = scanner.nextInt() - 1;
 			}
 			catch(Exception e){}
 		} while (!checkCoordinateResults(coordinates, ambits));
@@ -56,6 +53,15 @@ public class InputHandler {
 		}
 		while(direction == Directions.None);
 		return direction;
+	}
+	
+	public String getLine()
+	{
+		try {
+			return reader.readLine();
+		} catch(IOException e){
+			return "";
+		}
 	}
 	
 	private boolean checkCoordinateResults(int[] coordinates, int[] ambits)

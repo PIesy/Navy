@@ -4,11 +4,11 @@ public class ShipBuilder {
 
 	public static Ship buildShip(ShipType type)
 	{
-		return new Ship(type.toString(), type.getSize() + 1);
+		return new Ship(type.toString(), type.getSize());
 	}
 	
 	public enum ShipType { 
-		Boat(0), Schooner(1), Destroyer(2), Carrier(3);
+		Boat(1), Schooner(2), Destroyer(3), Carrier(4);
 		
 		public int getSize()
 		{

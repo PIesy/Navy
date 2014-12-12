@@ -3,8 +3,6 @@ package com.mycompany.app;
 import com.mycompany.app.Grid;
 import com.mycompany.app.Painter;
 import com.mycompany.app.Player;
-import com.mycompany.app.ships.ShipBuilder;
-import com.mycompany.app.ships.ShipBuilder.ShipType;
 
 public class Game {
 
@@ -21,8 +19,6 @@ public class Game {
 	{
 		logic = new GameLogic(players, painter);
 		logic.start();
-		fields[0].setShip(ShipBuilder.buildShip(ShipType.Carrier), 5, 5, Directions.West);
-		painter.draw(fields[0], fields[1]);
 	}
 
 	private GameLogic logic;

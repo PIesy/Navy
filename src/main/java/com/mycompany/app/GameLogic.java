@@ -18,34 +18,33 @@ public class GameLogic {
 	
 	public void start()
 	{
-		setShips(players[0]);
-		setShips(players[1]);
+		for(Player player: players)
+		{
+			getPlayerName(player);
+			setShips(player);
+		}
 		try{
 			while(true){
 				turn();
 				switchTurn();
 			}
-		} catch(GameOverException e){}
+		} catch(GameOverException e){
+			painter.printLine("Player " + players[currentPlayer].getName() + " is victorious!");
+			painter.draw(players[currentPlayer].getField(), players[1 -currentPlayer].getField());
+		}
 	}
 	
 	public void setShips(Player player)
 	{
 		int[] coordinates;
 		Directions direction;
-		int i = 0;
-		try{
-			while(i < 1)
+		try {
+			while(true)
 			{
-				painter.printLine("Enter your ship start position plz");
-				coordinates = inputHandler.getCoordinates(ambits);
-				painter.printLine("Enter your ship direction(North, East, South, West)");
-				direction = inputHandler.getShipDirection();
-				try {
-					player.getField().setShip(player.setShip(), coordinates[0], coordinates[1], direction);
-				} catch(IndexOutOfBoundsException e) {
+				coordinates = getCoordinates("Enter ship start position in form: x y");
+				direction = getDirection("Enter your ship direction(North, East, South, West)");
+				if(!tryToSetShip(player, coordinates, direction))
 					continue;
-				}
-				i++;
 				painter.printLine("Ship set");
 			}
 		}
@@ -59,26 +58,65 @@ public class GameLogic {
 		do {
 			painter.draw(players[currentPlayer].getField(), players[1 -currentPlayer].getField());
 			end = true;
-			painter.printLine("Enter node to hit");
-			coordinates = inputHandler.getCoordinates(ambits);
+			coordinates = getCoordinates("Enter node to hit");
 			try {
 				if(players[1 - currentPlayer].getField().hit(coordinates[0], coordinates[1]))
 					end = false;
 			} catch(AlreadyHitException e) {
-				end = false;
-				painter.printLine("Try again plz");
+				end = tryAgain();
 			} catch (ShipIsKilledException e) {
-				end = false;
-				painter.printLine("Target Down!");
-				players[currentPlayer].destroyShip();
+				end = destroyShip();
 			}
 		} while (!end);
+		painter.printLine("Missed!");
 	}
 	
 	public void switchTurn()
 	{
-		painter.printLine("Turn Switched");
 		currentPlayer = 1 - currentPlayer;
+		painter.printLine(players[currentPlayer].getName() + " turn");
+	}
+	
+	private void getPlayerName(Player player)
+	{
+		painter.printLine("Enter your name please");
+		player.setName(inputHandler.getLine());
+	}
+	
+	private int[] getCoordinates(String message)
+	{
+		painter.printLine(message);
+		return inputHandler.getCoordinates(ambits);
+	}
+	
+	private Directions getDirection(String message)
+	{
+		painter.printLine(message);
+		return inputHandler.getShipDirection();
+	}
+	
+	private boolean tryToSetShip(Player player, int[] coordinates, Directions direction ) throws AllShipsSetException
+	{
+		try {
+			player.getField().setShip(player.setShip(), coordinates[0], coordinates[1], direction);
+		} catch(IndexOutOfBoundsException e) {
+			painter.printLine(e.getMessage());
+			return tryAgain();
+		}
+		return true;
+	}
+	
+	private boolean tryAgain()
+	{
+		painter.printLine("Try again plz");
+		return false;
+	}
+	
+	private boolean destroyShip() throws GameOverException
+	{
+		painter.printLine("Target Down!");
+		players[currentPlayer].destroyShip();
+		return false;
 	}
 	
 	private int ambits[];

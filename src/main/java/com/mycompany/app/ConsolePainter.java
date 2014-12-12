@@ -1,14 +1,13 @@
 package com.mycompany.app;
 
 import java.io.PrintWriter;
-
 import com.mycompany.app.Painter;
 
 public class ConsolePainter implements Painter{
 
 	public void draw(Grid currentPlayerGrid, Grid enemyGrid) {
 		drawGrid(false, currentPlayerGrid);
-		writer.println("---------------------------------------------------------");
+		writer.println("====================================================");
 		drawGrid(true, enemyGrid);
 	}
 

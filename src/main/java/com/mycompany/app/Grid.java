@@ -61,9 +61,11 @@ public class Grid {
 		int[] endCoordinates = new int[2];
 		
 		for(int i = 0; i < 2; i++)
-			endCoordinates[i] = startCoordinates[i] + offset[i] * ship.getSize();
+			endCoordinates[i] = startCoordinates[i] + offset[i] * (ship.getSize() - 1);
 		if(isOutOfBounds(startCoordinates) || isOutOfBounds(endCoordinates))
-			throw new IndexOutOfBoundsException();
+			throw new IndexOutOfBoundsException("Ship doesn't fit in field");
+		if(isNearExistingShip(startCoordinates, endCoordinates))
+			throw new IndexOutOfBoundsException("Too close too your other ship");
 		if((offset[0] < 0) || (offset[1] < 0))
 			setShipInGrid(endCoordinates, startCoordinates, ship);
 		else 
@@ -75,6 +77,28 @@ public class Grid {
 		for(int i = 0; i < 2; i++)
 			if((coordinates[i] < 0) || (coordinates[i] > dimensions[i] - 1))
 				return true;
+		return false;
+	}
+	
+	public boolean isNearExistingShip(int[] startCoordinates, int[] endCoordinates)
+	{
+		for(int i = startCoordinates[1]; i <= endCoordinates[1]; i++ )
+			for(int j = startCoordinates[0]; j <= endCoordinates[0]; j++)
+				if(searchCircullar(i, j))
+					return true;
+		return false;
+	}
+	
+	private boolean searchCircullar(int x, int y)
+	{
+		for(int i = y - 1; i <= y + 1; i++)
+			for(int j = x - 1; j <= x + 1; j++)
+			{
+				if((i < 0) || (j < 0) || (i > dimensions[0] - 1) || (j > dimensions[0] - 1))
+					continue;
+				if(!grid[i][j].isEmpty())
+					return true;
+			}
 		return false;
 	}
 	

@@ -60,7 +60,7 @@ public class Player
 	private final static int SHIP_COUNT = 10;
 	private Ship[] ships = new Ship[SHIP_COUNT];
 	private int unsetShipCount = SHIP_COUNT;
-	private int remainingShips = 1;
+	private int remainingShips = SHIP_COUNT;
 	private String name = "";
 	private Grid field;
 }
