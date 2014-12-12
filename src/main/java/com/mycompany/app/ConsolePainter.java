@@ -10,6 +10,10 @@ public class ConsolePainter implements Painter{
 		writer.println("====================================================");
 		drawGrid(true, enemyGrid);
 	}
+	
+	public void draw(Grid grid, boolean isEnemy) {
+		drawGrid(isEnemy, grid);
+	}
 
 	private void drawGrid(boolean isEnemy, Grid grid)
 	{
@@ -24,7 +28,14 @@ public class ConsolePainter implements Painter{
 	}
 	
 	public void printLine(String line) {
-		System.out.println(line);
+		writer.println(line);
+	}
+	
+	public void clearScreen() {
+		StringBuilder str = new StringBuilder();
+		for(int i = 0; i < 25; i++)
+			str.append("\n\n");
+		printLine(str.toString());
 	}
 	
 	private char getCharFromStateIdentifier(boolean enemy, int identifier)

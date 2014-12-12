@@ -38,6 +38,11 @@ public class Player
 		return ships[unsetShipCount];
 	}
 	
+	public void unsetShip()
+	{
+		unsetShipCount++;
+	}
+	
 	public void destroyShip() throws GameOverException
 	{
 		remainingShips--;

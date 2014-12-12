@@ -17,6 +17,7 @@ public class Game {
 	
 	public void start()
 	{
+		painter.clearScreen();
 		logic = new GameLogic(players, painter);
 		logic.start();
 	}

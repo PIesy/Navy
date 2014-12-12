@@ -59,17 +59,21 @@ public class Grid {
 		int[] offset = direction.convertTo2DOffset();
 		int[] startCoordinates = {x, y};
 		int[] endCoordinates = new int[2];
+		int[] temp;
 		
 		for(int i = 0; i < 2; i++)
 			endCoordinates[i] = startCoordinates[i] + offset[i] * (ship.getSize() - 1);
+		if((offset[0] < 0) || (offset[1] < 0))
+		{
+			temp = startCoordinates;
+			startCoordinates = endCoordinates;
+			endCoordinates = temp;
+		}
 		if(isOutOfBounds(startCoordinates) || isOutOfBounds(endCoordinates))
 			throw new IndexOutOfBoundsException("Ship doesn't fit in field");
 		if(isNearExistingShip(startCoordinates, endCoordinates))
 			throw new IndexOutOfBoundsException("Too close too your other ship");
-		if((offset[0] < 0) || (offset[1] < 0))
-			setShipInGrid(endCoordinates, startCoordinates, ship);
-		else 
-			setShipInGrid(startCoordinates, endCoordinates, ship);
+		setShipInGrid(startCoordinates, endCoordinates, ship);
 	}
 	
 	public boolean isOutOfBounds(int[] coordinates)
@@ -84,7 +88,7 @@ public class Grid {
 	{
 		for(int i = startCoordinates[1]; i <= endCoordinates[1]; i++ )
 			for(int j = startCoordinates[0]; j <= endCoordinates[0]; j++)
-				if(searchCircullar(i, j))
+				if(searchCircullar(j, i))
 					return true;
 		return false;
 	}

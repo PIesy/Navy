@@ -41,6 +41,7 @@ public class GameLogic {
 		try {
 			while(true)
 			{
+				painter.draw(player.getField(), false);
 				coordinates = getCoordinates("Enter ship start position in form: x y");
 				direction = getDirection("Enter your ship direction(North, East, South, West)");
 				if(!tryToSetShip(player, coordinates, direction))
@@ -74,6 +75,7 @@ public class GameLogic {
 	public void switchTurn()
 	{
 		currentPlayer = 1 - currentPlayer;
+		painter.clearScreen();
 		painter.printLine(players[currentPlayer].getName() + " turn");
 	}
 	
