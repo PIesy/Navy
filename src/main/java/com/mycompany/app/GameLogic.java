@@ -44,8 +44,9 @@ public class GameLogic {
 				painter.draw(player.getField(), false);
 				coordinates = getCoordinates("Enter ship start position in form: x y");
 				direction = getDirection("Enter your ship direction(North, East, South, West)");
-				if(!tryToSetShip(player, coordinates, direction))
+				if(!tryToSetShip(player, coordinates, direction)){
 					continue;
+				}
 				painter.printLine("Ship set");
 			}
 		}

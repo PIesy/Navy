@@ -21,8 +21,9 @@ public class ConsolePainter implements Painter{
 	
 	public void clearScreen() {
 		StringBuilder str = new StringBuilder();
-		for(int i = 0; i < 25; i++)
+		for(int i = 0; i < 25; i++){
 			str.append("\n\n");
+		}
 		printLine(str.toString());
 	}
 	
@@ -34,8 +35,9 @@ public class ConsolePainter implements Painter{
 		for(int i = 0; i < grid.getSizeVertical(); i++)
 		{
 			writer.print(i + "||");
-			for (int j = 0; j < grid.getSizeHorizontal(); j++)
+			for (int j = 0; j < grid.getSizeHorizontal(); j++){
 				writer.print(getStringFromStateIdentifier(isEnemy, field[i][j].toInt()));
+			}
 			writer.print("||");
 			writer.println();
 		}
@@ -44,12 +46,14 @@ public class ConsolePainter implements Painter{
 	private void drawGridHeader(Grid grid)
 	{
 		writer.print("   ");
-		for (int j = 0; j < grid.getSizeHorizontal(); j++)
+		for (int j = 0; j < grid.getSizeHorizontal(); j++){
 			writer.print(" " + (j + 1) + " ");
+		}
 		writer.println();
 		writer.print("___");
-		for (int j = 0; j < grid.getSizeHorizontal(); j++)
+		for (int j = 0; j < grid.getSizeHorizontal(); j++){
 			writer.print("___");
+		}
 		writer.print("__");
 		writer.println();
 	}

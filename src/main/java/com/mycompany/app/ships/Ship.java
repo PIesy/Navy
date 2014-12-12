@@ -31,8 +31,9 @@ public class Ship {
 	public void hit() throws ShipIsKilledException
 	{
 		hitpoints--;
-		if(hitpoints == 0)
+		if(hitpoints == 0){
 			throw new ShipIsKilledException(shipType);
+		}
 	}
 		
 	private final int size;

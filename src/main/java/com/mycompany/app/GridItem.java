@@ -10,8 +10,9 @@ public class GridItem {
 	
 	public boolean hit() throws AlreadyHitException, ShipIsKilledException
 	{
-		if(hit)
+		if(hit){
 			throw new AlreadyHitException();
+		}
 		hit = true;
 		if(!empty)
 		{

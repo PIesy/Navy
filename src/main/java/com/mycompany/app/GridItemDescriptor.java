@@ -20,12 +20,15 @@ public class GridItemDescriptor {
 	
 	public void initialize(GridItem item)
 	{
-		if (!item.isHit() && item.isEmpty())
+		if (!item.isHit() && item.isEmpty()){
 			state = ItemState.EmptyNonHit;
-		else if (item.isHit() && item.isEmpty())
+		}
+		else if (item.isHit() && item.isEmpty()){
 			state = ItemState.EmptyHit;
-		else if (!item.isHit() && !item.isEmpty())
+		}
+		else if (!item.isHit() && !item.isEmpty()){
 			state = ItemState.ShipNonHit;
+		}
 		else 
 			state = ItemState.ShipHit;
 	}

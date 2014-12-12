@@ -8,10 +8,12 @@ public class Game {
 
 	public Game(int fieldSizeX, int fieldSizeY, Painter painter)
 	{
-		for (int i = 0; i < 2; i++)
+		for (int i = 0; i < 2; i++){
 			fields[i] = new Grid(fieldSizeX, fieldSizeY);
-		for (int i = 0; i < 2; i++)
+		}
+		for (int i = 0; i < 2; i++){
 			players[i] = new Player(fields[i]);
+		}
 		this.painter = painter;
 	}
 	

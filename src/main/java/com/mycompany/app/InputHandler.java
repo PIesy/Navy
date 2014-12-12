@@ -30,9 +30,7 @@ public class InputHandler {
 		do{
 			try {
 				buffer = reader.readLine();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			} catch (IOException e) {}
 			switch(buffer.toLowerCase()){
 			case "north":
 				direction = Directions.North;
@@ -66,10 +64,12 @@ public class InputHandler {
 	
 	private boolean checkCoordinateResults(int[] coordinates, int[] ambits)
 	{
-		if((coordinates[0] < 0) || (coordinates[1] < 0))
+		if((coordinates[0] < 0) || (coordinates[1] < 0)){
 			return false;
-		if((coordinates[0] > ambits[0]) || (coordinates[1] > ambits[1]))
+		}
+		if((coordinates[0] > ambits[0]) || (coordinates[1] > ambits[1])){
 			return false;
+		}
 		return true;
 	}
 	

@@ -17,9 +17,11 @@ public class Grid {
 		dimensions[0] = sizeX;
 		dimensions[1] = sizeY;
 		grid = new GridItem[sizeY][sizeX];
-		for (int i = 0; i < sizeY; i++)
-			for (int j = 0; j < sizeX; j++)
+		for (int i = 0; i < sizeY; i++){
+			for (int j = 0; j < sizeX; j++){
 				grid[i][j] = new GridItem();
+			}
+		}
 	}
 	
 	public GridItemDescriptor[][] getState()
@@ -61,18 +63,21 @@ public class Grid {
 		int[] endCoordinates = new int[2];
 		int[] temp;
 		
-		for(int i = 0; i < 2; i++)
+		for(int i = 0; i < 2; i++){
 			endCoordinates[i] = startCoordinates[i] + offset[i] * (ship.getSize() - 1);
+		}
 		if((offset[0] < 0) || (offset[1] < 0))
 		{
 			temp = startCoordinates;
 			startCoordinates = endCoordinates;
 			endCoordinates = temp;
 		}
-		if(isOutOfBounds(startCoordinates) || isOutOfBounds(endCoordinates))
+		if(isOutOfBounds(startCoordinates) || isOutOfBounds(endCoordinates)){
 			throw new IndexOutOfBoundsException("Ship doesn't fit in field");
-		if(isNearExistingShip(startCoordinates, endCoordinates))
+		}
+		if(isNearExistingShip(startCoordinates, endCoordinates)){
 			throw new IndexOutOfBoundsException("Too close too your other ship");
+		}
 		setShipInGrid(startCoordinates, endCoordinates, ship);
 	}
 	
@@ -86,31 +91,39 @@ public class Grid {
 	
 	public boolean isNearExistingShip(int[] startCoordinates, int[] endCoordinates)
 	{
-		for(int i = startCoordinates[1]; i <= endCoordinates[1]; i++ )
-			for(int j = startCoordinates[0]; j <= endCoordinates[0]; j++)
-				if(searchCircullar(j, i))
+		for(int i = startCoordinates[1]; i <= endCoordinates[1]; i++ ){
+			for(int j = startCoordinates[0]; j <= endCoordinates[0]; j++){
+				if(searchCircullar(j, i)){
 					return true;
+				}
+			}
+		}
 		return false;
 	}
 	
 	private boolean searchCircullar(int x, int y)
 	{
-		for(int i = y - 1; i <= y + 1; i++)
+		for(int i = y - 1; i <= y + 1; i++){
 			for(int j = x - 1; j <= x + 1; j++)
 			{
-				if((i < 0) || (j < 0) || (i > dimensions[1] - 1) || (j > dimensions[0] - 1))
+				if((i < 0) || (j < 0) || (i > dimensions[1] - 1) || (j > dimensions[0] - 1)){
 					continue;
-				if(!grid[i][j].isEmpty())
+				}
+				if(!grid[i][j].isEmpty()){
 					return true;
+				}
 			}
+		}
 		return false;
 	}
 	
 	private void setShipInGrid(int[] startCoordinates, int[] endCoordinates, Ship ship)
 	{
-		for(int i = startCoordinates[1]; i <= endCoordinates[1]; i++ )
-			for(int j = startCoordinates[0]; j <= endCoordinates[0]; j++)
+		for(int i = startCoordinates[1]; i <= endCoordinates[1]; i++ ){
+			for(int j = startCoordinates[0]; j <= endCoordinates[0]; j++){
 				grid[i][j].setShip(ship);
+			}
+		}
 	}
 	
 	private GridItem[][] grid;
