@@ -15,18 +15,6 @@ public class ConsolePainter implements Painter{
 		drawGrid(isEnemy, grid);
 	}
 
-	private void drawGrid(boolean isEnemy, Grid grid)
-	{
-		GridItemDescriptor[][] field = grid.getState();
-		
-		for(int i = 0; i < grid.getSizeVertical(); i++)
-		{
-			for (int j = 0; j < grid.getSizeHorizontal(); j++)
-				writer.print(getCharFromStateIdentifier(isEnemy, field[i][j].toInt()));
-			writer.println();
-		}
-	}
-	
 	public void printLine(String line) {
 		writer.println(line);
 	}
@@ -38,21 +26,49 @@ public class ConsolePainter implements Painter{
 		printLine(str.toString());
 	}
 	
-	private char getCharFromStateIdentifier(boolean enemy, int identifier)
+	private void drawGrid(boolean isEnemy, Grid grid)
+	{
+		GridItemDescriptor[][] field = grid.getState();
+		
+		drawGridHeader(grid);
+		for(int i = 0; i < grid.getSizeVertical(); i++)
+		{
+			writer.print(i + "||");
+			for (int j = 0; j < grid.getSizeHorizontal(); j++)
+				writer.print(getStringFromStateIdentifier(isEnemy, field[i][j].toInt()));
+			writer.print("||");
+			writer.println();
+		}
+	}
+	
+	private void drawGridHeader(Grid grid)
+	{
+		writer.print("   ");
+		for (int j = 0; j < grid.getSizeHorizontal(); j++)
+			writer.print(" " + (j + 1) + " ");
+		writer.println();
+		writer.print("___");
+		for (int j = 0; j < grid.getSizeHorizontal(); j++)
+			writer.print("___");
+		writer.print("__");
+		writer.println();
+	}
+	
+	private String getStringFromStateIdentifier(boolean enemy, int identifier)
 	{
 		switch(identifier){
 		case 0:
-			return '-';
+			return " - ";
 		case 1:
-			return '*';
+			return " * ";
 		case 2:
 			if(enemy)
-				return '-';
-			return 'S';
+				return " - ";
+			return " S ";
 		case 3:
-			return 'D';
+			return " X ";
 		default:
-			return '!';
+			return " ! ";
 		}
 	}
 	

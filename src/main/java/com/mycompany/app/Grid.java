@@ -98,7 +98,7 @@ public class Grid {
 		for(int i = y - 1; i <= y + 1; i++)
 			for(int j = x - 1; j <= x + 1; j++)
 			{
-				if((i < 0) || (j < 0) || (i > dimensions[0] - 1) || (j > dimensions[0] - 1))
+				if((i < 0) || (j < 0) || (i > dimensions[1] - 1) || (j > dimensions[0] - 1))
 					continue;
 				if(!grid[i][j].isEmpty())
 					return true;
