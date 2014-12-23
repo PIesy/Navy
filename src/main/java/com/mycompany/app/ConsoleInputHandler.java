@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Scanner;
 
-public class InputHandler {
+public class ConsoleInputHandler{
 	
 	public int[] getCoordinates(int[] ambits)
 	{

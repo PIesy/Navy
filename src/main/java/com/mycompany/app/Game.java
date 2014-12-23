@@ -1,31 +1,26 @@
 package com.mycompany.app;
 
-import com.mycompany.app.Grid;
 import com.mycompany.app.Painter;
-import com.mycompany.app.Player;
+import com.mycompany.app.LocalPlayer;
+import com.mycompany.app.GameRules;
+import com.mycompany.app.GridDescriptor;
 
 public class Game {
 
-	public Game(int fieldSizeX, int fieldSizeY, Painter painter)
+	public Game(GameRules rules, Painter painter)
 	{
-		for (int i = 0; i < 2; i++){
-			fields[i] = new Grid(fieldSizeX, fieldSizeY);
-		}
-		for (int i = 0; i < 2; i++){
-			players[i] = new Player(fields[i]);
-		}
+	    gameRules = rules;
+		grid = new GridDescriptor(rules.fieldDimensions[0], rules.fieldDimensions[1]);
 		this.painter = painter;
 	}
 	
 	public void start()
 	{
 		painter.clearScreen();
-		logic = new GameLogic(players, painter);
-		logic.start();
 	}
 
-	private GameLogic logic;
+	private GameRules gameRules;
 	private Painter painter;
-	private Player[] players = new Player[2];
-	private Grid fields[] = new Grid[2];
+	private LocalPlayer[] players;
+	private GridDescriptor grid;
 }

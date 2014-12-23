@@ -1,10 +1,9 @@
 package com.mycompany.app;
 
-import com.mycompany.app.Grid;
+import com.mycompany.app.GridDescriptor;
 
 public interface Painter {
-	void draw(Grid grid, boolean isEnemy);
-	void draw(Grid currentPlayerGrid, Grid enemyGrid);
 	void printLine(String line);
 	void clearScreen();
+	void drawGrid(GridDescriptor grid);
 }
