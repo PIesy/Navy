@@ -1,7 +1,6 @@
 package com.mycompany.app;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedList;
 
 import javax.json.JsonObject;
 
@@ -36,6 +35,13 @@ public class LocalPlayer
 	public String getName()
 	{
 		return name;
+	}
+	
+	public Ship getShip()
+	{
+		Ship ship = ships.pollLast();
+		
+		return ship;
 	}
 	
 	private void buildShips()
@@ -74,7 +80,7 @@ public class LocalPlayer
         }
     }
 
-	private List<Ship> ships = new ArrayList<>();
+	private LinkedList<Ship> ships = new LinkedList<>();
 	private final int carriersCount;
 	private final int destroyersCount;
 	private final int schoonersCount;
