@@ -2,14 +2,22 @@ package com.mycompany.app;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import javax.json.JsonObject;
 
 import org.apache.http.*;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.protocol.RequestExpectContinue;
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.DefaultBHttpClientConnection;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicHttpEntityEnclosingRequest;
 import org.apache.http.message.BasicHttpRequest;
 import org.apache.http.protocol.HttpCoreContext;
@@ -24,64 +32,54 @@ import org.apache.http.util.EntityUtils;
 
 public class HttpHandler {
 
-    public HttpHandler()
-    {
-        initContext();
-    }
-    
-    public JsonObject makeGetRequest(String url)
+    public JsonObject makeGetRequest(String url) throws IOException
     {
         JsonObject response = null;
-        BasicHttpRequest request = new BasicHttpRequest("GET", url);
-        response = sendRequest(request);
+        URI uri = makeUri(url);
+        HttpGet request = new HttpGet(uri);
+        response = makeRequest(request);
         return response;
     }
     
-    public JsonObject makePostRequest(String url, JsonObject data)
+    public JsonObject makePostRequest(String url, JsonObject data) throws IOException
     {
         JsonObject response = null;
+        URI uri = makeUri(url);
         HttpEntity requestData = new StringEntity(data.toString(), ContentType.APPLICATION_JSON);
-        BasicHttpEntityEnclosingRequest request = new BasicHttpEntityEnclosingRequest("POST", url);
+        HttpPost request = new HttpPost(uri);
         request.setEntity(requestData);
-        response = sendRequest(request);
+        response = makeRequest(request);
         return response;
     }
-    
-    private JsonObject sendRequest(HttpRequest request)
+
+    private URI makeUri(String path)
     {
-        JsonObject responseData = null;
-        try {
-            if (!conn.isOpen()) {
-                Socket socket = new Socket(host.getHostName(), host.getPort());
-                conn.bind(socket);
-            }
-            httpexecutor.preProcess(request, httpproc, coreContext);
-            HttpResponse response = httpexecutor.execute(request, conn, coreContext);
-            httpexecutor.postProcess(response, httpproc, coreContext);
-            responseData = (new JsonBuilder()).getJsonObject(EntityUtils.toString((response.getEntity())));
-        } catch (Exception e) {} 
-        finally {
-            try {
-                conn.close();
-            } catch (IOException e) {}
-        }
-        return responseData;
+    	URI uri;
+    	try {
+			uri = new URIBuilder().setScheme("http")
+					.setHost("localhost")
+					.setPort(8080)
+					.setPath(path)
+					.build();
+		} catch (URISyntaxException e) {
+			return null;
+		}
+    	return uri;
     }
     
-    private void initContext()
+    private JsonObject makeRequest(HttpRequestBase request) throws IOException
     {
-        httpproc = HttpProcessorBuilder.create()
-                .add(new RequestContent())
-                .add(new RequestTargetHost())
-                .add(new RequestConnControl())
-                .add(new RequestUserAgent("Test/1.1"))
-                .add(new RequestExpectContinue()).build();
-        coreContext.setTargetHost(host);
+    	HttpResponse response;
+    	JsonObject responseData;
+    	
+		response = httpClient.execute(request);
+    	try {
+			responseData = (new JsonBuilder()).getJsonObject(EntityUtils.toString(response.getEntity()));
+		} catch (ParseException e) { 
+			throw new IOException();
+		}
+    	return responseData;
     }
     
-    private HttpRequestExecutor httpexecutor = new HttpRequestExecutor();
-    private DefaultBHttpClientConnection conn = new DefaultBHttpClientConnection(8 * 1024);
-    private HttpHost host = new HttpHost("localhost", 8080);
-    private HttpProcessor httpproc;
-    private final HttpCoreContext coreContext = HttpCoreContext.create();
+    private final HttpClient httpClient = HttpClients.createDefault();
 }
