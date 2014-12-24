@@ -19,7 +19,14 @@ public class ConsolePainter implements Painter
 	
     public void drawGrid(GridDescriptor grid) 
     {
-        writer.println("Hello no grid yet");
+        int[] dimensions = grid.getDimensions();
+        
+        for(int i = 0; i < dimensions[1]; i++){
+            for(int j = 0; j < dimensions[0]; j++){
+                writer.print(getStringFromStateIdentifier(false, grid.getGridValue(j, i)));
+            }
+            writer.println();
+        }
     }
 		
 	private String getStringFromStateIdentifier(boolean enemy, int identifier)
@@ -41,5 +48,4 @@ public class ConsolePainter implements Painter
 	}
 	
 	private PrintWriter writer = new PrintWriter(System.out, true);
-	
 }

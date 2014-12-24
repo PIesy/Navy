@@ -15,9 +15,9 @@ public class App
 		try {
 			obj = handler.makeGetRequest("/Game");
 		} catch (IOException e) {
-			e.printStackTrace();
+			return;
 		}
-        System.out.println(obj.toString());
-        //Game game = new Game(12, 10, new ConsolePainter());
+        Game game = new Game((new GameRules()).parseJson(obj), new ConsolePainter());
+        game.start();
     }
 }

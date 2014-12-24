@@ -2,8 +2,7 @@ package com.mycompany.app;
 
 import java.util.LinkedList;
 
-import javax.json.JsonObject;
-
+import com.mycompany.app.GameRules;
 import com.mycompany.app.ships.Ship;
 import com.mycompany.app.ships.ShipBuilder;
 import com.mycompany.app.ships.ShipBuilder.ShipType;
@@ -18,12 +17,12 @@ public class LocalPlayer
         boatsCount = 4;
     }
     
-	public LocalPlayer(JsonObject data)
+	public LocalPlayer(GameRules rules)
 	{
-	    carriersCount = data.getInt("carriersCount");
-	    destroyersCount = data.getInt("destroyersCount");
-	    schoonersCount = data.getInt("schoonersCount");
-	    boatsCount = data.getInt("boatsCount");
+	    carriersCount = rules.carriersCount;
+	    destroyersCount = rules.destroyersCount;
+	    schoonersCount = rules.schoonersCount;
+	    boatsCount = rules.boatscount;
 		buildShips();
 	}
 	
@@ -62,21 +61,21 @@ public class LocalPlayer
 	private void buildSchooners()
     {
         for(int i = 0; i < schoonersCount; i++){
-            ships.add(ShipBuilder.buildShip(ShipType.Boat));
+            ships.add(ShipBuilder.buildShip(ShipType.Schooner));
         }
     }
 	
 	private void buildDestroyers()
     {
         for(int i = 0; i < destroyersCount; i++){
-            ships.add(ShipBuilder.buildShip(ShipType.Boat));
+            ships.add(ShipBuilder.buildShip(ShipType.Destroyer));
         }
     }
 	
 	private void buildCarriers()
     {
         for(int i = 0; i < carriersCount; i++){
-            ships.add(ShipBuilder.buildShip(ShipType.Boat));
+            ships.add(ShipBuilder.buildShip(ShipType.Carrier));
         }
     }
 

@@ -2,7 +2,6 @@ package com.mycompany.app;
 
 import java.io.IOException;
 
-import javax.json.Json;
 import javax.json.JsonObject;
 
 import com.mycompany.app.Painter;
@@ -18,6 +17,9 @@ public class Game {
 	    gameRules = rules;
 		grid = new GridDescriptor(rules.fieldDimensions[0], rules.fieldDimensions[1]);
 		this.painter = painter;
+		builder = new JsonRequestBuilder(rules.gameId);
+		player = new LocalPlayer(gameRules);
+		painter.drawGrid(grid);
 	}
 	
 	public void start()
@@ -25,6 +27,7 @@ public class Game {
 		try {
 			getPlayerName();
 			prepareForGame();
+			gameLoop();
 		} catch (IOException e) {
 			painter.printLine("Sorry not today");
 		}
@@ -36,18 +39,26 @@ public class Game {
 		
 		painter.printLine("Enter your name");
 		player.setName(input.getLine());
-		object = builder.makeRequestObject("setName", "name", player.getName());
+		object = builder.parseName("name", player.getName());
 		object = handler.makePostRequest("/Game", object);
+		painter.printLine(object.toString());
 	}
 	
 	private void prepareForGame() throws IOException
 	{
-		JsonObject response = builder.getEmptyObject();
-		while(!((response.getString("state")) == "allSet"))
+		JsonObject response = builder.getBuilder().getEmptyObject();
+		boolean end = false;
+		
+		while(!end)
 		{
+		    try {
+		        if((response.getString("state")) == "allSet")
+		            end = true;
+		    } catch(NullPointerException e) {}
 			Ship ship = player.getShip();
 			do{
 				response = handler.makePostRequest("/Game", getShipPosition(ship.getType()));
+				painter.printLine(response.toString());
 			}
 			while(response.containsKey("error"));
 		}
@@ -55,24 +66,46 @@ public class Game {
 	
 	private JsonObject getShipPosition(String shipType)
 	{
-		JsonObject result = builder.getEmptyObject();
+		JsonObject result = builder.getBuilder().getEmptyObject();
 		int[] coordinates = input.getCoordinates(gameRules.fieldDimensions);
 		Directions direction = input.getShipDirection();
-		result = Json.createObjectBuilder().add("type", "setShip")
-				.add("x", coordinates[0])
-				.add("y", coordinates[1])
-				.add("shipType", shipType)
-				.add("direction", direction.name())
-				.build();
+		result = builder.parseShipCoordinates(coordinates, direction, shipType);
 		
 		return result;
+	}
+	
+	private JsonObject hit() throws IOException
+	{
+	    int[] coordinates = input.getCoordinates(gameRules.fieldDimensions);
+	    JsonObject response = builder.getBuilder().getEmptyObject();
+	    while(!((response.getString("state")) == "success"))
+	    {
+	        coordinates = input.getCoordinates(gameRules.fieldDimensions);
+	        response = handler.makePostRequest("/Game", builder.parseCoordinates(coordinates));
+	        painter.printLine(response.toString());
+	    }
+	    return response;
+	}
+	
+	private void gameLoop() throws IOException
+	{
+	    JsonObject response = builder.getBuilder().getEmptyObject();
+	    
+	    while(!response.containsKey("gameEnd"))
+	    {
+	        response = hit();
+	        grid.fill(response);
+	        painter.drawGrid(grid);
+	        painter.printLine(response.toString());
+	    }
+	    painter.printLine(response.getString("gameEnd"));
 	}
 
 	private GameRules gameRules;
 	private Painter painter;
-	private LocalPlayer player = new LocalPlayer();
+	private LocalPlayer player;
 	private GridDescriptor grid;
 	private ConsoleInputHandler input = new ConsoleInputHandler();
-	private JsonBuilder builder = new JsonBuilder();
+	private JsonRequestBuilder builder;
 	private HttpHandler handler = new HttpHandler();
 }

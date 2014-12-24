@@ -21,15 +21,5 @@ public class JsonBuilder {
     {
     	return Json.createObjectBuilder().build();
     }
-    
-    public<T> JsonObject makeRequestObject(String type, String dataName, T data)
-    {
-    	 JsonObject object;
-    	 
-    	 object = Json.createObjectBuilder()
-    			 .add("type", type)
-    			 .add(dataName, data.toString())
-    			 .build();
-    	 return object;
-    }
+
 }
