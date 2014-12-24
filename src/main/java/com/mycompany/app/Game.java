@@ -52,13 +52,15 @@ public class Game {
 		while(!end)
 		{
 		    try {
-		        if((response.getString("state")) == "allSet")
+		        if((response.getString("state")) == "allSet"){
 		            end = true;
+		        }
 		    } catch(NullPointerException e) {}
 			Ship ship = player.getShip();
 			do{
 				response = handler.makePostRequest("/Game", getShipPosition(ship.getType()));
 				painter.printLine(response.toString());
+				painter.drawGrid(grid.fill(response));
 			}
 			while(response.containsKey("error"));
 		}
@@ -69,8 +71,8 @@ public class Game {
 		JsonObject result = builder.getBuilder().getEmptyObject();
 		int[] coordinates = input.getCoordinates(gameRules.fieldDimensions);
 		Directions direction = input.getShipDirection();
-		result = builder.parseShipCoordinates(coordinates, direction, shipType);
 		
+		result = builder.parseShipCoordinates(coordinates, direction, shipType);		
 		return result;
 	}
 	
@@ -78,8 +80,15 @@ public class Game {
 	{
 	    int[] coordinates = input.getCoordinates(gameRules.fieldDimensions);
 	    JsonObject response = builder.getBuilder().getEmptyObject();
-	    while(!((response.getString("state")) == "success"))
+	    boolean end = false;
+	    
+	    while(!end)
 	    {
+	        try {
+                if((response.getString("state")) == "success"){
+                    end = true;
+                }
+            } catch(NullPointerException e) {}
 	        coordinates = input.getCoordinates(gameRules.fieldDimensions);
 	        response = handler.makePostRequest("/Game", builder.parseCoordinates(coordinates));
 	        painter.printLine(response.toString());

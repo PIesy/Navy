@@ -14,7 +14,7 @@ public class GridDescriptor {
         dimensions[1] = size_y;
     }
     
-    public void fill(JsonObject data)
+    public GridDescriptor fill(JsonObject data)
     {
         JsonArray fieldArray = data.getJsonArray("field");
         int i = 0, j = 0;
@@ -24,8 +24,10 @@ public class GridDescriptor {
                 grid[i][j] = ((JsonNumber)column).intValue();
                 j++;
             }
+            j = 0;
             i++;
         }
+        return this;
     }
     
     public int getGridValue(int x, int y)
