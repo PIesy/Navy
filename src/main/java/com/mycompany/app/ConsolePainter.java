@@ -17,13 +17,13 @@ public class ConsolePainter implements Painter
 		printLine(str.toString());
 	}
 	
-    public void drawGrid(GridDescriptor grid) 
+    public void drawGrid(GridDescriptor grid, boolean enemy) 
     {
         int[] dimensions = grid.getDimensions();
         
         for(int i = 0; i < dimensions[1]; i++){
             for(int j = 0; j < dimensions[0]; j++){
-                writer.print(getStringFromStateIdentifier(false, grid.getGridValue(j, i)));
+                writer.print(getStringFromStateIdentifier(enemy, grid.getGridValue(j, i)));
             }
             writer.println();
         }

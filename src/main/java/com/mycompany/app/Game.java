@@ -14,13 +14,14 @@ public class Game {
 
 	public Game(GameRules rules, Painter painter, HttpHandler handler)
 	{
+	    enemyGrid = new GridDescriptor(rules.fieldDimensions[0], rules.fieldDimensions[1]);
 		grid = new GridDescriptor(rules.fieldDimensions[0], rules.fieldDimensions[1]);
 		gameHelper = new GameHelper(painter, rules, new ConsoleInputHandler());
 		builder = new JsonRequestBuilder(rules.gameId);
         player = new LocalPlayer(rules);
 		this.painter = painter;
 		this.handler = handler;
-		painter.drawGrid(grid);
+		painter.drawGrid(grid, false);
 	}
 	
 	public void start()
@@ -49,20 +50,18 @@ public class Game {
 	private void prepareForGame() throws IOException
 	{
 		JsonObject response = builder.getBuilder().getDummyObject();
-		boolean end = false;
 		Ship ship;
 		
-		while(!end)
+		while(true)
 		{
-	        if((response.getString("state")) == "allSet"){
-	            end = true;
-	        }
 			ship = player.getShip();
+			if(ship == null)
+			    break;
 			do{
-			    response = gameHelper.getShipPosition("Enter ship start coordinates in form: x y", "Enter sip direction(north, south, east, west)", ship.getType());
+			    response = gameHelper.getShipPosition("Enter ship start coordinates in form: x y", "Enter ship direction(north, south, east, west)", ship.getType());
 				response = handler.makePostRequest("/Game", response);
 				gameHelper.printError(response);
-				painter.drawGrid(grid.fill(response));
+				painter.drawGrid(grid.fill(response, "field"), false);
 			}
 			while(response.containsKey("error"));
 		}
@@ -72,17 +71,15 @@ public class Game {
 	private JsonObject hit() throws IOException
 	{
 	    JsonObject response = builder.getBuilder().getDummyObject();
-	    boolean end = false;
+	    String state = null;
 	    
-	    while(!end)
+	    do
 	    {
-            if((response.getString("state")) == "success"){
-                end = true;
-            }
 	        response = gameHelper.getCoordinates("Enter coordinates to hit in form: x y");
 	        response = handler.makePostRequest("/Game", response);
 	        gameHelper.printError(response);
-	    }
+	        state = response.getString("state");
+	    } while(!state.equals("success"));
 	    return response;
 	}
 	
@@ -93,8 +90,11 @@ public class Game {
 	    while(!response.containsKey("gameEnd"))
 	    {
 	        response = hit();
-	        grid.fill(response);
-	        painter.drawGrid(grid);
+	        grid.fill(response, "field");
+	        painter.drawGrid(grid, false);
+	        enemyGrid.fill(response, "field1");
+	        painter.printLine("================================================================");
+	        painter.drawGrid(enemyGrid, true);
 	        gameHelper.printError(response);
 	    }
 	    painter.printLine(response.getString("gameEnd"));
@@ -103,7 +103,7 @@ public class Game {
 	private GameHelper gameHelper;
 	private Painter painter;
 	private LocalPlayer player;
-	private GridDescriptor grid;
+	private GridDescriptor grid, enemyGrid;
 	private JsonRequestBuilder builder;
 	private HttpHandler handler;
 }

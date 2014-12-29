@@ -33,6 +33,7 @@ public class GameHelper {
     
     public JsonObject getCoordinates(String welcomeMessage)
     {
+        painter.printLine(welcomeMessage);
         int[] coordinates = inputHandler.getCoordinates(rules.fieldDimensions);
         return builder.parseCoordinates(coordinates);
     }

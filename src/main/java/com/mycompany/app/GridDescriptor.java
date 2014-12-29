@@ -14,9 +14,11 @@ public class GridDescriptor {
         dimensions[1] = size_y;
     }
     
-    public GridDescriptor fill(JsonObject data)
+    public GridDescriptor fill(JsonObject data, String fieldName)
     {
-        JsonArray fieldArray = data.getJsonArray("field");
+        if(!data.containsKey(fieldName))
+            return this;
+        JsonArray fieldArray = data.getJsonArray(fieldName);
         int i = 0, j = 0;
         
         for (JsonValue row : fieldArray) {
