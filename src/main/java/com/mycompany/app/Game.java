@@ -12,13 +12,14 @@ import com.mycompany.app.ships.Ship;
 
 public class Game {
 
-	public Game(GameRules rules, Painter painter)
+	public Game(GameRules rules, Painter painter, HttpHandler handler)
 	{
-	    gameRules = rules;
 		grid = new GridDescriptor(rules.fieldDimensions[0], rules.fieldDimensions[1]);
-		this.painter = painter;
+		gameHelper = new GameHelper(painter, rules, new ConsoleInputHandler());
 		builder = new JsonRequestBuilder(rules.gameId);
-		player = new LocalPlayer(gameRules);
+        player = new LocalPlayer(rules);
+		this.painter = painter;
+		this.handler = handler;
 		painter.drawGrid(grid);
 	}
 	
@@ -35,63 +36,52 @@ public class Game {
 	
 	private void getPlayerName() throws IOException
 	{
-		JsonObject object;
+		JsonObject response;
 		
-		painter.printLine("Enter your name");
-		player.setName(input.getLine());
-		object = builder.parseName("name", player.getName());
-		object = handler.makePostRequest("/Game", object);
-		painter.printLine(object.toString());
+		do {
+    		response = gameHelper.getName(player, "Enter your name");
+    		response = handler.makePostRequest("/Game", response);
+    		gameHelper.printError(response);
+		}
+		while(response.containsKey("error"));
 	}
 	
 	private void prepareForGame() throws IOException
 	{
-		JsonObject response = builder.getBuilder().getEmptyObject();
+		JsonObject response = builder.getBuilder().getDummyObject();
 		boolean end = false;
+		Ship ship;
 		
 		while(!end)
 		{
-		    try {
-		        if((response.getString("state")) == "allSet"){
-		            end = true;
-		        }
-		    } catch(NullPointerException e) {}
-			Ship ship = player.getShip();
+	        if((response.getString("state")) == "allSet"){
+	            end = true;
+	        }
+			ship = player.getShip();
 			do{
-				response = handler.makePostRequest("/Game", getShipPosition(ship.getType()));
-				painter.printLine(response.toString());
+			    response = gameHelper.getShipPosition("Enter ship start coordinates in form: x y", "Enter sip direction(north, south, east, west)", ship.getType());
+				response = handler.makePostRequest("/Game", response);
+				gameHelper.printError(response);
 				painter.drawGrid(grid.fill(response));
 			}
 			while(response.containsKey("error"));
 		}
 	}
 	
-	private JsonObject getShipPosition(String shipType)
-	{
-		JsonObject result = builder.getBuilder().getEmptyObject();
-		int[] coordinates = input.getCoordinates(gameRules.fieldDimensions);
-		Directions direction = input.getShipDirection();
-		
-		result = builder.parseShipCoordinates(coordinates, direction, shipType);		
-		return result;
-	}
 	
 	private JsonObject hit() throws IOException
 	{
-	    int[] coordinates = input.getCoordinates(gameRules.fieldDimensions);
-	    JsonObject response = builder.getBuilder().getEmptyObject();
+	    JsonObject response = builder.getBuilder().getDummyObject();
 	    boolean end = false;
 	    
 	    while(!end)
 	    {
-	        try {
-                if((response.getString("state")) == "success"){
-                    end = true;
-                }
-            } catch(NullPointerException e) {}
-	        coordinates = input.getCoordinates(gameRules.fieldDimensions);
-	        response = handler.makePostRequest("/Game", builder.parseCoordinates(coordinates));
-	        painter.printLine(response.toString());
+            if((response.getString("state")) == "success"){
+                end = true;
+            }
+	        response = gameHelper.getCoordinates("Enter coordinates to hit in form: x y");
+	        response = handler.makePostRequest("/Game", response);
+	        gameHelper.printError(response);
 	    }
 	    return response;
 	}
@@ -105,16 +95,15 @@ public class Game {
 	        response = hit();
 	        grid.fill(response);
 	        painter.drawGrid(grid);
-	        painter.printLine(response.toString());
+	        gameHelper.printError(response);
 	    }
 	    painter.printLine(response.getString("gameEnd"));
 	}
 
-	private GameRules gameRules;
+	private GameHelper gameHelper;
 	private Painter painter;
 	private LocalPlayer player;
 	private GridDescriptor grid;
-	private ConsoleInputHandler input = new ConsoleInputHandler();
 	private JsonRequestBuilder builder;
-	private HttpHandler handler = new HttpHandler();
+	private HttpHandler handler;
 }

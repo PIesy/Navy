@@ -17,7 +17,7 @@ public class App
 		} catch (IOException e) {
 			return;
 		}
-        Game game = new Game((new GameRules()).parseJson(obj), new ConsolePainter());
+        Game game = new Game((new GameRules()).parseJson(obj), new ConsolePainter(), handler);
         game.start();
     }
 }

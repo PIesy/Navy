@@ -21,5 +21,10 @@ public class JsonBuilder {
     {
     	return Json.createObjectBuilder().build();
     }
+    
+    public JsonObject getDummyObject()
+    {
+        return Json.createObjectBuilder().add("state", "none").build();
+    }
 
 }

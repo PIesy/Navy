@@ -36,14 +36,14 @@ public class JsonRequestBuilder {
         return request;
     }
     
-    public JsonObject parseName(String dataName, String name)
+    public JsonObject parseName(String name)
     {
          JsonObject object;
          
          object = Json.createObjectBuilder()
                  .add("gameId", gameId)
                  .add("type", "setName")
-                 .add(dataName, name.toString())
+                 .add("name", name)
                  .build();
          return object;
     }
