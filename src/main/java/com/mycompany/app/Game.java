@@ -61,7 +61,7 @@ public class Game {
 			    response = gameHelper.getShipPosition("Enter ship start coordinates in form: x y", "Enter ship direction(north, south, east, west)", ship.getType());
 				response = handler.makePostRequest("/Game", response);
 				gameHelper.printError(response);
-				painter.drawGrid(grid.fill(response, "field"), false);
+				painter.drawGrid(grid.fill(response, "playerField"), false);
 			}
 			while(response.containsKey("error"));
 		}
@@ -90,9 +90,9 @@ public class Game {
 	    while(!response.containsKey("gameEnd"))
 	    {
 	        response = hit();
-	        grid.fill(response, "field");
+	        grid.fill(response, "playerField");
 	        painter.drawGrid(grid, false);
-	        enemyGrid.fill(response, "field1");
+	        enemyGrid.fill(response, "botField");
 	        painter.printLine("================================================================");
 	        painter.drawGrid(enemyGrid, true);
 	        gameHelper.printError(response);

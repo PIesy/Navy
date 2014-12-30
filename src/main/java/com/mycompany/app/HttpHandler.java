@@ -24,6 +24,7 @@ public class HttpHandler {
         JsonObject response = null;
         URI uri = makeUri(url);
         HttpGet request = new HttpGet(uri);
+        request.addHeader("Accept", "application/json");
         response = makeRequest(request);
         return response;
     }

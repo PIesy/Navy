@@ -9,7 +9,6 @@ public class App
 {
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
         HttpHandler handler = new HttpHandler();
         JsonObject obj = Json.createObjectBuilder().build();
 		try {

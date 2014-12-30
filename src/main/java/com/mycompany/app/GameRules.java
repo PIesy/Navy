@@ -6,8 +6,8 @@ public class GameRules implements Cloneable{
 
     public GameRules parseJson(JsonObject data)
     {
-        fieldDimensions[0] = data.getInt("size_x");
-        fieldDimensions[1] = data.getInt("size_y");
+        fieldDimensions[0] = data.getJsonArray("fieldDimensions").getInt(0);
+        fieldDimensions[1] = data.getJsonArray("fieldDimensions").getInt(1);
         carriersCount = data.getInt("carriersCount");
         destroyersCount = data.getInt("destroyersCount");
         schoonersCount = data.getInt("schoonersCount");
