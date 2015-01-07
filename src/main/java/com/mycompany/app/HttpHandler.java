@@ -29,11 +29,11 @@ public class HttpHandler {
         return response;
     }
     
-    public JsonObject makePostRequest(String url, JsonObject data) throws IOException
+    public JsonObject makePostRequest(String url, Object data, ContentType type) throws IOException
     {
         JsonObject response = null;
         URI uri = makeUri(url);
-        HttpEntity requestData = new StringEntity(data.toString(), ContentType.APPLICATION_JSON);
+        HttpEntity requestData = new StringEntity(data.toString(), type);
         HttpPost request = new HttpPost(uri);
         request.setEntity(requestData);
         response = makeRequest(request);
@@ -44,9 +44,9 @@ public class HttpHandler {
     {
     	URI uri;
     	try {
-			uri = new URIBuilder().setScheme("http")
-					.setHost("localhost")
-					.setPort(8080)
+			uri = new URIBuilder().setScheme(HttpConfig.SCHEME)
+					.setHost(HttpConfig.HOST)
+					.setPort(HttpConfig.PORT)
 					.setPath(path)
 					.build();
 		} catch (URISyntaxException e) {

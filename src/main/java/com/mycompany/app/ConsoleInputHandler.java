@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Scanner;
 
+import com.mycompany.data.game.Directions;
+import com.mycompany.app.GameFactory.GameType;
+
 public class ConsoleInputHandler{
 	
 	public int[] getCoordinates(int[] ambits)
@@ -51,6 +54,30 @@ public class ConsoleInputHandler{
 		}
 		while(direction == Directions.None);
 		return direction;
+	}
+	
+	public GameType getType()
+	{
+		GameType type;
+		
+		do{
+			try {
+				buffer = reader.readLine();
+			} catch (IOException e) {}
+			switch(buffer.toLowerCase()){
+			case "web":
+				type = GameType.Web;
+				break;
+			case "local":
+				type = GameType.Local;
+				break;
+			default:
+				type = GameType.None;
+				break;
+			}
+		}
+		while(type == GameType.None);
+		return type;
 	}
 	
 	public String getLine()

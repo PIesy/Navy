@@ -4,7 +4,7 @@ public class ShipBuilder {
 
 	public static Ship buildShip(ShipType type)
 	{
-		return new Ship(type.toString(), type.getSize());
+		return new Ship(type, type.getSize());
 	}
 	
 	public enum ShipType { 

@@ -1,54 +1,52 @@
 package com.mycompany.app;
 
-import javax.json.JsonObject;
-
-import com.mycompany.app.LocalPlayer;
 import com.mycompany.app.ConsoleInputHandler;
-import com.mycompany.app.JsonRequestBuilder;
-import com.mycompany.app.GameRules;
+import com.mycompany.app.GameFactory.GameType;
+
+import com.mycompany.data.game.Directions;
+import com.mycompany.data.game.GameResponse;
 
 public class GameHelper {
 
-    public GameHelper(Painter painter, GameRules rules, ConsoleInputHandler inputHandler)
+    public GameHelper(Painter painter, ConsoleInputHandler inputHandler)
     {
-        builder = new JsonRequestBuilder(rules.gameId);
         this.inputHandler = inputHandler;
         this.painter = painter;
-        this.rules = rules;
     }
     
-    public void printError(JsonObject data)
+    public boolean printIfError(GameResponse data)
     {
-        if(data.containsKey("error")){
-            painter.printLine(data.getString("error"));
+        if(data.getError() != null){
+            painter.printLine(data.getError());
+            return true;
         }
+        return false;
     }
     
-    public JsonObject getName(LocalPlayer player, String welcomeMessage)
+    public GameType getGameType(String welcomeMessage)
+    {
+    	painter.printLine(welcomeMessage);
+    	return inputHandler.getType();
+    }
+    
+    public String getName(String welcomeMessage)
     {
         painter.printLine(welcomeMessage);
-        player.setName(inputHandler.getLine());
-        return builder.parseName(player.getName());
+        return inputHandler.getLine();
     }
     
-    public JsonObject getCoordinates(String welcomeMessage)
+    public int[] getCoordinates(String welcomeMessage, int[] boundaries)
     {
         painter.printLine(welcomeMessage);
-        int[] coordinates = inputHandler.getCoordinates(rules.fieldDimensions);
-        return builder.parseCoordinates(coordinates);
+        return inputHandler.getCoordinates(boundaries);
     }
     
-    public JsonObject getShipPosition(String coordinatesMessage, String directionMessage, String shipType)
+    public Directions getDirection(String welcomeMessage)
     {
-        painter.printLine(coordinatesMessage);
-        int[] coordinates = inputHandler.getCoordinates(rules.fieldDimensions);
-        painter.printLine(directionMessage);
-        Directions direction = inputHandler.getShipDirection();
-        return builder.parseShipCoordinates(coordinates, direction, shipType);        
+        painter.printLine(welcomeMessage);
+        return inputHandler.getShipDirection();  
     }
     
     private final ConsoleInputHandler inputHandler;
-    private final JsonRequestBuilder builder;
-    private final GameRules rules;
     private final Painter painter;
 }

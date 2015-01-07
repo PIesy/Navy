@@ -1,24 +1,25 @@
 package com.mycompany.app.ships;
 
 import com.mycompany.app.exceptions.ShipIsKilledException;
+import com.mycompany.app.ships.ShipBuilder.ShipType;
 
 public class Ship {
 	
 	public Ship()
 	{
 		size = 0;
-		shipType = "";
-		hitpoints = 0;
+		shipType = ShipType.Boat;
+		hitPoints = 0;
 	}
 	
-	public Ship(String shipType, int size)
+	public Ship(ShipType shipType, int size)
 	{
 		this.shipType = shipType;
 		this.size = size;
-		hitpoints = size;
+		hitPoints = size;
 	}
 	
-	public String getType()
+	public ShipType getType()
 	{
 		return shipType;
 	}
@@ -30,13 +31,13 @@ public class Ship {
 	
 	public void hit() throws ShipIsKilledException
 	{
-		hitpoints--;
-		if(hitpoints == 0){
-			throw new ShipIsKilledException(shipType);
+		hitPoints--;
+		if(hitPoints == 0){
+			throw new ShipIsKilledException(shipType.name());
 		}
 	}
 		
 	private final int size;
-	private final String shipType;
-	private int hitpoints;
+	private final ShipType shipType;
+	private int hitPoints;
 }
