@@ -17,7 +17,8 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
-public class HttpHandler {
+public class HttpHandler
+{
 
     public JsonObject makeGetRequest(String url) throws IOException
     {
@@ -28,7 +29,7 @@ public class HttpHandler {
         response = makeRequest(request);
         return response;
     }
-    
+
     public JsonObject makePostRequest(String url, Object data, ContentType type) throws IOException
     {
         JsonObject response = null;
@@ -42,32 +43,32 @@ public class HttpHandler {
 
     private URI makeUri(String path)
     {
-    	URI uri;
-    	try {
-			uri = new URIBuilder().setScheme(HttpConfig.SCHEME)
-					.setHost(HttpConfig.HOST)
-					.setPort(HttpConfig.PORT)
-					.setPath(path)
-					.build();
-		} catch (URISyntaxException e) {
-			return null;
-		}
-    	return uri;
+        URI uri;
+        try {
+            uri = new URIBuilder().setScheme(HttpConfig.SCHEME)
+                    .setHost(HttpConfig.HOST)
+                    .setPort(HttpConfig.PORT)
+                    .setPath(path)
+                    .build();
+        } catch (URISyntaxException e) {
+            return null;
+        }
+        return uri;
     }
-    
+
     private JsonObject makeRequest(HttpRequestBase request) throws IOException
     {
-    	HttpResponse response;
-    	JsonObject responseData;
-    	
-		response = httpClient.execute(request);
-    	try {
-			responseData = (new JsonBuilder()).getJsonObject(EntityUtils.toString(response.getEntity()));
-		} catch (ParseException e) { 
-			throw new IOException();
-		}
-    	return responseData;
+        HttpResponse response;
+        JsonObject responseData;
+
+        response = httpClient.execute(request);
+        try {
+            responseData = (new JsonBuilder()).getJsonObject(EntityUtils.toString(response.getEntity()));
+        } catch (ParseException e) {
+            throw new IOException();
+        }
+        return responseData;
     }
-    
+
     private final HttpClient httpClient = HttpClients.createDefault();
 }

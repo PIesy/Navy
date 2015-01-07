@@ -6,7 +6,8 @@ import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 
-public class JsonBuilder {
+public class JsonBuilder
+{
 
     public JsonObject getJsonObject(String string)
     {
@@ -16,12 +17,12 @@ public class JsonBuilder {
         object = reader.readObject();
         return object;
     }
-    
+
     public JsonObject getEmptyObject()
     {
-    	return Json.createObjectBuilder().build();
+        return Json.createObjectBuilder().build();
     }
-    
+
     public JsonObject getDummyObject()
     {
         return Json.createObjectBuilder().add("state", "none").build();
