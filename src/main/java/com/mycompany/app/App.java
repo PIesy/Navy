@@ -1,7 +1,5 @@
 package com.mycompany.app;
 
-import java.io.IOException;
-
 public class App
 {
     public static void main(String[] args)
@@ -9,7 +7,7 @@ public class App
         GameHandler game;
         try {
             game = new GameHandler(new ConsolePainter());
-        } catch (IOException e) {
+        } catch (Exception e) {
             return;
         }
         game.start();

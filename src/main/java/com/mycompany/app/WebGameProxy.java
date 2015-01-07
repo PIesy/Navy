@@ -1,34 +1,25 @@
 package com.mycompany.app;
 
+import com.mycompany.app.ContentMapperFactory.MapperType;
 import com.mycompany.data.game.GameRules;
 import com.mycompany.data.game.GameRequest;
 import com.mycompany.data.game.GameResponse;
 
-import java.io.IOException;
-
-import javax.json.JsonObject;
-
-import org.apache.http.entity.ContentType;
-
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 public class WebGameProxy extends GameProxy
 {
 
-    public WebGameProxy() throws IOException
+    public WebGameProxy() throws Exception
     {
         super(createGame());
     }
 
     @Override
-    public GameResponse makeRequest(GameRequest request) throws IOException
+    public GameResponse makeRequest(GameRequest request) throws Exception
     {
         addGameIdToRequest(request);
-        JsonObject req = builder.getJsonObject(mapper.writeValueAsString(request));
-        JsonObject response = httpHandler.makePostRequest("/Game", req, ContentType.APPLICATION_JSON);
-        System.out.println(response.toString());
-        return mapper.readValue(response.toString(), GameResponse.class);
+        String response = httpHandler.makePostRequest("/Game", mapper.serializeGameRequest(request));
+        System.out.println(response);
+        return mapper.deserializeGameResponse(response, GameResponse.class);
     }
 
     private void addGameIdToRequest(GameRequest request)
@@ -36,15 +27,13 @@ public class WebGameProxy extends GameProxy
         request.setGameId(getRules().getGameId());
     }
 
-    private static GameRules createGame() throws IOException
+    private static GameRules createGame() throws Exception
     {
-        mapper.setSerializationInclusion(Include.NON_EMPTY);
-        JsonObject rules = httpHandler.makeGetRequest("/Game");
-        System.out.println(rules.toString());
-        return mapper.readValue(rules.toString(), GameRules.class);
+        String rules = httpHandler.makeGetRequest("/Game");
+        System.out.println(rules);
+        return mapper.deserializeGameResponse(rules, GameRules.class);
     }
 
-    private final JsonBuilder builder = new JsonBuilder();
-    private final static ObjectMapper mapper = new ObjectMapper();
+    private final static ContentMapper mapper = ContentMapperFactory.createMapper(AppConfig.MAPPER_TYPE);
     private final static HttpHandler httpHandler = new HttpHandler();
 }

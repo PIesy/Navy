@@ -1,11 +1,9 @@
 package com.mycompany.app;
 
-import java.io.IOException;
-
 public class GameFactory
 {
 
-    public static GameProxy newGame(GameType type) throws IOException, IllegalArgumentException
+    public static GameProxy newGame(GameType type) throws Exception
     {
         switch (type) {
         case Web:

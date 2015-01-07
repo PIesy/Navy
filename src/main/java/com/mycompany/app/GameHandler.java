@@ -1,10 +1,7 @@
 package com.mycompany.app;
 
-import java.io.IOException;
-
 import com.mycompany.app.GridDescriptor;
 import com.mycompany.app.Painter;
-
 import com.mycompany.data.game.LocalPlayer;
 import com.mycompany.data.game.GameRules;
 import com.mycompany.data.game.ships.Ship;
@@ -14,7 +11,7 @@ import com.mycompany.data.game.GameResponse;
 public class GameHandler
 {
 
-    public GameHandler(Painter painter) throws IOException
+    public GameHandler(Painter painter) throws Exception
     {
         gameHelper = new GameHelper(painter, new ConsoleInputHandler());
         GameRules rules = newGame();
@@ -100,7 +97,7 @@ public class GameHandler
         painter.printLine(response.getGameEnd());
     }
 
-    private GameRules newGame() throws IOException
+    private GameRules newGame() throws Exception
     {
         proxy = GameFactory.newGame(gameHelper.getGameType("Choose game type please: (Web or Local)"));
         return proxy.getRules();
