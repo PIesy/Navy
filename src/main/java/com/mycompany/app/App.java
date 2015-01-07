@@ -8,6 +8,7 @@ public class App
         try {
             game = new GameHandler(new ConsolePainter());
         } catch (Exception e) {
+            e.printStackTrace();
             return;
         }
         game.start();

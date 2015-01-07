@@ -1,6 +1,7 @@
 package com.mycompany.app;
 
-import com.mycompany.app.ContentMapperFactory.MapperType;
+import com.mycompany.data.ContentMapper;
+import com.mycompany.data.ContentMapperFactory;
 import com.mycompany.data.game.GameRules;
 import com.mycompany.data.game.GameRequest;
 import com.mycompany.data.game.GameResponse;
@@ -17,9 +18,9 @@ public class WebGameProxy extends GameProxy
     public GameResponse makeRequest(GameRequest request) throws Exception
     {
         addGameIdToRequest(request);
-        String response = httpHandler.makePostRequest("/Game", mapper.serializeGameRequest(request));
+        String response = httpHandler.makePostRequest("/Game", mapper.serialize(request, GameRequest.class));
         System.out.println(response);
-        return mapper.deserializeGameResponse(response, GameResponse.class);
+        return mapper.deserialize(response, GameResponse.class);
     }
 
     private void addGameIdToRequest(GameRequest request)
@@ -31,9 +32,9 @@ public class WebGameProxy extends GameProxy
     {
         String rules = httpHandler.makeGetRequest("/Game");
         System.out.println(rules);
-        return mapper.deserializeGameResponse(rules, GameRules.class);
+        return mapper.deserialize(rules, GameRules.class);
     }
 
-    private final static ContentMapper mapper = ContentMapperFactory.createMapper(AppConfig.MAPPER_TYPE);
+    private final static ContentMapper mapper = ContentMapperFactory.getMapper(AppConfig.MAPPER_TYPE);
     private final static HttpHandler httpHandler = new HttpHandler();
 }
