@@ -35,25 +35,8 @@ public class ConsoleInputHandler
         do {
             try {
                 buffer = reader.readLine();
-            } catch (IOException e) {
-            }
-            switch (buffer.toLowerCase()) {
-            case "north":
-                direction = Directions.North;
-                break;
-            case "south":
-                direction = Directions.South;
-                break;
-            case "east":
-                direction = Directions.East;
-                break;
-            case "west":
-                direction = Directions.West;
-                break;
-            default:
-                direction = Directions.None;
-                break;
-            }
+            } catch (IOException e) {}
+            direction = Directions.parseString(buffer);
         } while (direction == Directions.None);
         return direction;
     }
@@ -65,19 +48,8 @@ public class ConsoleInputHandler
         do {
             try {
                 buffer = reader.readLine();
-            } catch (IOException e) {
-            }
-            switch (buffer.toLowerCase()) {
-            case "web":
-                type = GameType.Web;
-                break;
-            case "local":
-                type = GameType.Local;
-                break;
-            default:
-                type = GameType.None;
-                break;
-            }
+            } catch (IOException e) {}
+            type = GameType.parseString(buffer);
         } while (type == GameType.None);
         return type;
     }

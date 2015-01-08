@@ -18,11 +18,11 @@ public class LocalGameProxy extends GameProxy
     public GameResponse makeRequest(GameRequest request) throws Exception
     {
         switch (request.getType()) {
-        case "setName":
+        case SetName:
             return game.setPlayerName(request.getName());
-        case "setShip":
+        case SetShip:
             return game.setShip(request.getCoordinates(), request.getDirection());
-        case "hit":
+        case Hit:
             return game.hit(request.getCoordinates());
         default:
             throw new IllegalArgumentException("Not valid request type");
