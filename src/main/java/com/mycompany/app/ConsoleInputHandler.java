@@ -37,7 +37,7 @@ public class ConsoleInputHandler
                 buffer = reader.readLine();
             } catch (IOException e) {}
             direction = Directions.parseString(buffer);
-        } while (direction == Directions.None);
+        } while (direction == null);
         return direction;
     }
 
